@@ -1,1 +1,2 @@
-<?php require('functions.php');
+<?php require('templates/layout.php'); ?>
+<?php require('templates/index.php'); ?>

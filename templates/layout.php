@@ -109,7 +109,7 @@ function price($num)
     </header>
 
     <main class="container">
-        <?php print($content) ?>
+        <?php $content ?>
     </main>
 
     <footer class="main-footer">
