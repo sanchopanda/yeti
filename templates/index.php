@@ -44,7 +44,7 @@
                         </span>
                     </div>
                     <div class="lot__timer timer">
-                        <?= $now; ?>
+                        <?= $now; ?>, <?= $hour_remaining; ?>
                     </div>
                 </div>
             </div>
