@@ -2,11 +2,13 @@
 require('data.php'); 
 
 
+date_default_timezone_set("Europe/Moscow");
+$now =  strtotime(date(H.i));
+
+$tomorow = strtotime(date(d));
 
 
-
-
-$page_content = render('index.php', ['offer' => $offer]);
+$page_content = render('index.php', ['offer' => $offer, 'now' => $now, 'tomorow' = $tomorow]);
 
 
 $layout_content = render('layout.php',
