@@ -1,67 +1,15 @@
-<?php
+<?php 
 $is_auth = (bool) rand(0, 1);
-
 $user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
-
-$categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
-
-$offer = [
-    [
-        'name' => '2014 Rossignol District Snowboard',
-        'cat' => 'Доски и лыжи',
-        'price' => 10999,
-        'url' => 'img/lot-1.jpg'
-    ],
-    [
-        'name' => 'DC Ply Mens 2016/2017 Snowboard',
-        'cat' => 'Доски и лыжи',
-        'price' => 159999,
-        'url' => 'img/lot-2.jpg'
-    ],
-    [
-        'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-        'cat' => 'Крепления',
-        'price' => 8000,
-        'url' => 'img/lot-3.jpg'
-    ],
-    [
-        'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
-        'cat' => 'Ботинки',
-        'price' => 10999,
-        'url' => 'img/lot-4.jpg'
-    ],
-    [
-        'name' => 'Куртка для сноуборда DC Mutiny Charocal',
-        'cat' => 'Одежда',
-        'price' => 7500,
-        'url' => 'img/lot-5.jpg'
-    ],
-    [
-        'name' => 'Маска Oakley Canopy',
-        'cat' => 'Разное',
-        'price' => 5400,
-        'url' => 'img/lot-6.jpg'
-    ]
-];
-
-function price($num)
-{
-    $price = ceil($num);
-    if ($price > 1000) {
-        $price = number_format($price, 0, '.', ' ');
-    };
-    $price = $price . " Р";
-    print($price);
-}
-
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title><?php print($title) ?></title>
+    <title><?= $title ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -79,19 +27,15 @@ function price($num)
             </form>
             <a class="main-header__add-lot button" href="add-lot.html">Добавить лот</a>
 
-            <nav class="user-menu">
-
-                <?php
-                $is_auth;
-                ?>
+            <nav class="user-menu">               
 
                 <?php if ($is_auth == true) : ?>
                 <div class="user-menu__image">
-                    <img src="<?php print($user_avatar) ?>" width="40" height="40" alt="Пользователь">
+                    <img src="<?= $user_avatar?>" width="40" height="40" alt="Пользователь">
                 </div>
                 <div class="user-menu__logged">
                     <p>
-                        <?php print($user_name) ?>
+                        <?= $user_name ?>
                     </p>
                 </div>
                 <?php elseif ($is_auth == false) : ?>
@@ -109,7 +53,7 @@ function price($num)
     </header>
 
     <main class="container">
-        <?php $content ?>
+        <?= $content ?>
     </main>
 
     <footer class="main-footer">
@@ -176,7 +120,5 @@ function price($num)
             </div>
         </div>
     </footer>
-
 </body>
-
 </html>
