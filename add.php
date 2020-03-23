@@ -12,20 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         };
     };
 
-    if (isset($_FILES['lot-image']['name'])) {
-        /* $tmp_name = $_FILES['lot-image']['tmp_name'];
+    if ( ! sizeof( $_FILES ) ) {
+        $tmp_name = $_FILES['lot-image']['tmp_name'];
         $path = $_FILES['lot-image']['name'];
 
-        /*  $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);*/
-
-        $path = 'проверка';
-        //move_uploaded_file($tmp_name, 'img/' . $path);
+        /*$finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_type = finfo_file($finfo, $tmp_name);        */
+        //$errors['lot-image'] = 'Вы не загрузили файл';
+        move_uploaded_file($tmp_name, 'img/' . $path);
     } else {
-        $errors['image'] = 'Вы не загрузили файл';
+        $errors['lot-image'] = 'Вы не загрузили файл';
     };
 
-    $page_content = render('add.php', ['path' => $path, 'errors' => $errors, 'lot_member' => $lot_member]);
+    $page_content = render('add.php', ['path' => $path, 'errors' => $errors]);
 } else {
     $page_content = render('add.php', []);
 };

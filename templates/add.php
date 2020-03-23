@@ -36,9 +36,9 @@
                                     print($errors['lot-name']);
                                     ?></span>
     </div>
-    <div class="form__item form__item--file <?php if ($errors['image']) {
+    <div class="form__item form__item--file <?php if ($errors['lot-image']) {
                                                 print('form__item--invalid');
-                                            } else {
+                                            } else if($path){
                                                 print('form__item--uploaded');
                                             } ?>">
         <!-- form__item--uploaded -->
@@ -46,7 +46,7 @@
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
             <div class="preview__img">
-                <img src="img/" width="113" height="113" alt="Изображение лота">
+                <img src="img/<?php print($path); ?>" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
         <div class="form__input-file">
@@ -54,6 +54,9 @@
             <label for="photo2">
                 <span>+ Добавить</span>
             </label>
+            <span class="form__error"><?php
+                                        print($errors['lot-image']);
+                                        ?></span>
         </div>
     </div>
     <div class="form__container-three">
