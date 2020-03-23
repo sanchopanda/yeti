@@ -59,13 +59,11 @@ $user_avatar = 'img/user.jpg';
     <footer class="main-footer">
         <nav class="nav">
             <ul class="nav__list container">
-                <?php $index = 0;
-                while ($index < count($categories)) : ?>
+                <?php foreach ($categories as $key => $cat) : ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $categories[$index]; ?></a>
+                    <a href="all-lots.html"><?= $cat ?></a>
                 </li>
-                <?php $index = $index + 1; ?>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </ul>
         </nav>
         <div class="main-footer__bottom container">

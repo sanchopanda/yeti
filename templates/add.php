@@ -10,7 +10,7 @@
             <!-- form__item--invalid -->
             <label for="lot-name">Наименование</label>
             <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
-                value='<?= $lot_member['name']; ?>'>
+                value='<?= $lot['lot-name']; ?>'>
             <span class="form__error"><?php
                                         print($errors['lot-name']);
                                         ?></span>
@@ -18,11 +18,10 @@
         <div class="form__item">
             <label for="category">Категория</label>
             <select id="category" name="category">
-                <?php $index = 0;
-                while ($index < count($categories)) : ?>
-                <option><?= $categories[$index]; ?></option>
-                <?php $index = $index + 1; ?>
-                <?php endwhile; ?>
+                <?php foreach ($categories as $key => $cat) : ?>
+                <option <? if ($cat==$lot['category']) : ?>selected
+                    <? endif ?>><?= $cat ?></option>
+                <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>
         </div>
@@ -31,22 +30,22 @@
                                                 print('form__item--invalid');
                                             }; ?>">
         <label for="message">Описание</label>
-        <textarea id="message" name="message" placeholder="Напишите описание лота"></textarea>
+        <textarea id="message" name="message" placeholder="Напишите описание лота"><?= $lot['message']; ?></textarea>
         <span class="form__error"><?php
-                                    print($errors['lot-name']);
+                                    print($errors['message']);
                                     ?></span>
     </div>
     <div class="form__item form__item--file <?php if ($errors['lot-image']) {
                                                 print('form__item--invalid');
-                                            } else if($path){
+                                            } else if ($lot['path']) {
                                                 print('form__item--uploaded');
                                             } ?>">
         <!-- form__item--uploaded -->
-        <label>Изображение <?php print($path); ?></label>
+        <label>Изображение</label>
         <div class="preview">
             <button class="preview__remove" type="button">x</button>
             <div class="preview__img">
-                <img src="img/<?php print($path); ?>" width="113" height="113" alt="Изображение лота">
+                <img src="img/<?php print($lot['path']); ?>" width="113" height="113" alt="Изображение лота">
             </div>
         </div>
         <div class="form__input-file">
@@ -60,20 +59,36 @@
         </div>
     </div>
     <div class="form__container-three">
-        <div class="form__item form__item--small">
+        <div class="form__item form__item--small <?php if ($errors['lot-rate']) {
+                                                        print('form__item--invalid');
+                                                    }; ?>">
             <label for="lot-rate">Начальная цена</label>
-            <input id="lot-rate" type="number" name="lot-rate" placeholder="0">
-            <span class="form__error">Введите начальную цену</span>
+            <input id="lot-rate" type="number" name="lot-rate" placeholder="0" value="<?php if (is_numeric($lot['lot-rate'])) {
+                                                                                            print($lot['lot-rate']);
+                                                                                        } ?>">
+            <span class="form__error"><?php
+                                        print($errors['lot-rate']);
+                                        ?></span>
         </div>
-        <div class="form__item form__item--small">
+        <div class="form__item form__item--small <?php if ($errors['lot-step']) {
+                                                        print('form__item--invalid');
+                                                    }; ?>">
             <label for="lot-step">Шаг ставки</label>
-            <input id="lot-step" type="number" name="lot-step" placeholder="0">
-            <span class="form__error">Введите шаг ставки</span>
+            <input id="lot-step" type="number" name="lot-step" placeholder="0" value="<?php if (is_numeric($lot['lot-step'])) {
+                                                                                            print($lot['lot-step']);
+                                                                                        } ?>">
+            <span class="form__error"><?php
+                                        print($errors['lot-step']);
+                                        ?></span>
         </div>
-        <div class="form__item">
+        <div class="form__item <?php if ($errors['lot-date']) {
+                                    print('form__item--invalid');
+                                }; ?>">
             <label for="lot-date">Дата окончания торгов</label>
             <input class="form__input-date" id="lot-date" type="date" name="lot-date">
-            <span class="form__error">Введите дату завершения торгов</span>
+            <span class="form__error"><?php
+                                        print($errors['lot-date']);
+                                        ?></span>
         </div>
     </div>
     <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
