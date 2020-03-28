@@ -2,6 +2,7 @@
 require('data.php');
 require('lots.php');
 
+//Валидация форм
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
     $required_fields = ['lot-name', 'message', 'lot-rate', 'lot-step', 'lot-date'];
@@ -19,14 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors[$field] = 'Поле не заполнено';
         };
     };
-    if(!$lot['path']) {
+    if (!$lot['path']) {
         if (!empty($_FILES['lot-image']['name'])) {
             $tmp_name = $_FILES['lot-image']['tmp_name'];
             $path = $_FILES['lot-image']['name'];
-    
+
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $file_type = finfo_file($finfo, $tmp_name);
-    
+
             if ($file_type !== "image/jpeg" && $file_type !== "image/png") {
                 $errors['lot-image'] = 'Загрузите изображение в формате jpeg или png';
             } else {
@@ -37,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['lot-image'] = 'Вы не загрузили файл';
         };
     }
-   
-    if(count($errors)){
+
+    if (count($errors)) {
         $page_content = render('add.php', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories]);
     } else {
         $index = count($lots);
@@ -48,11 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $lots[$index]['url'] = 'img/' . $lot['path'];
         $page_content = render('lot-item.php', ['lot' => $lots[$index]]);
     }
-    
 } else {
     $page_content = render('add.php', ['categories' => $categories]);
 };
-
 
 
 $layout_content = render(
