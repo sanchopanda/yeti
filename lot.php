@@ -8,7 +8,7 @@ $path = "/";
 
 if ($lot) {
     $page_content = render('lot-item.php', ['lot' => $lot]);
-
+    //запись айди посещенных лотов в куки
     if ($_COOKIE['cookie_id']) {
         $cookie_id = $_COOKIE['cookie_id'];
         $cookie_id = json_decode($cookie_id);
