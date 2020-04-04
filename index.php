@@ -2,6 +2,7 @@
 require('data.php');
 require('lots.php');
 
+
 $page_content = render('index.php', ['lots' => $lots]);
 
 

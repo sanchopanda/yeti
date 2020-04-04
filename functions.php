@@ -38,3 +38,13 @@ function time_remaining()
     $time_remaining = $hour_remaining . ':' . $minute_remaining;
     print($time_remaining);
 };
+
+function searchUserByEmail($formEmail, $userData)
+{
+    foreach ($userData as $key => $value) {
+        if ($formEmail == $value['email']) {
+            return $value;
+        }
+    }
+    return false;
+};

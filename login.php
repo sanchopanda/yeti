@@ -17,21 +17,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         };
     };
 
-    if (!count($errors) and $user = searchUserByEmail($form['email'], $users)) {
-        if (password_verify($form['password'], $user['password'])) {
-            $_SESSION['user'] = $user;
+    if (!count($errors)) {
+
+        if ($user = searchUserByEmail($form['email'], $users)) {
+            if (password_verify($form['password'], $user['password'])) {
+                $_SESSION['user'] = $user;
+            } else {
+                $errors['password'] = 'Неверный пароль';
+            }
         } else {
-            $errors['password'] = 'Неверный пароль';
-        };
-    } else {
-        $errors['email'] = 'Такой пользователь не найден';
+            $errors['email'] = 'Такой пользователь не найден';
+        }
     }
 
     if (count($errors)) {
-        $page_content = render('login.php', ['form' => $form, 'errors' => $$errors]);
+        $page_content = render('login.php', ['form' => $form, 'errors' => $errors, 'form' => $form]);
+    } else {
+        $page_content = render('index.php', ['lots' => $lots]);
     }
 } else {
-    $page_content = render('login.php', ['categories' => $categories]);
+    $page_content = render('login.php', []);
 };
 
 

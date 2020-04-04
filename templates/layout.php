@@ -2,6 +2,7 @@
 $is_auth = (bool) rand(0, 1);
 $user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@ $user_avatar = 'img/user.jpg';
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
-            <a class="main-header__logo">
+            <a class="main-header__logo" href="/">
                 <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
@@ -29,22 +30,23 @@ $user_avatar = 'img/user.jpg';
 
             <nav class="user-menu">
 
-                <?php if ($is_auth == true) : ?>
+                <?php if ($_SESSION['user']) : ?>
                 <div class="user-menu__image">
                     <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
                 </div>
                 <div class="user-menu__logged">
                     <p>
-                        <?= $user_name ?>
+                        <?= $_SESSION['user']['name'] ?>
                     </p>
+                    <a href="logout.php">Выход</a>
                 </div>
-                <?php elseif ($is_auth == false) : ?>
+                <?php else : ?>
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
                         <a href="#">Регистрация</a>
                     </li>
                     <li class="user-menu__item">
-                        <a href="#">Вход</a>
+                        <a href="login.php">Вход</a>
                     </li>
                 </ul>
                 <?php endif; ?>

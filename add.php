@@ -1,9 +1,11 @@
 <?php require('functions.php');
 require('data.php');
 require('lots.php');
+session_start();
 
-//Валидация форм
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (!$_SESSION['user']) {
+    $page_content = render('404.php', []);
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
     $required_fields = ['lot-name', 'message', 'lot-rate', 'lot-step', 'lot-date'];
     $numeric_fields = ['lot-rate', 'lot-step'];

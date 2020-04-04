@@ -1,17 +1,23 @@
 <main>
-    <form class="form container" action="https://echo.htmlacademy.ru" method="post">
+    <form class="form container<?php if (count($errors)) {
+                                    print(' form-invalid');
+                                }; ?>" action="/login.php" method="post">
         <!-- form--invalid -->
         <h2>Вход</h2>
-        <div class="form__item">
+        <div class="form__item <?php if ($errors['email']) {
+                                    print('form__item--invalid');
+                                }; ?>">
             <!-- form__item--invalid -->
             <label for="email">E-mail*</label>
-            <input id="email" type="text" name="email" placeholder="Введите e-mail" required>
-            <span class="form__error">Введите e-mail</span>
+            <input id="email" type="text" name="email" placeholder="Введите e-mail" value='<?= $form['email']; ?>'>
+            <span class="form__error"><?= $errors['email'] ?></span>
         </div>
-        <div class="form__item form__item--last">
+        <div class="form__item form__item--last <?php if ($errors['password']) {
+                                                    print('form__item--invalid');
+                                                }; ?>">
             <label for="password">Пароль*</label>
-            <input id="password" type="text" name="password" placeholder="Введите пароль" required>
-            <span class="form__error">Введите пароль</span>
+            <input id="password" type="text" name="password" placeholder="Введите пароль">
+            <span class="form__error"><?= $errors['password'] ?></span>
         </div>
         <button type="submit" class="button">Войти</button>
     </form>

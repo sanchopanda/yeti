@@ -16,8 +16,9 @@ if ($lot) {
             array_push($cookie_id, $id);
             $cookie_id = json_encode($cookie_id);
         };
+        $cookie_id = json_encode($cookie_id);
     } else {
-        $cookie_id[] = $id;
+        // $cookie_id[] = $id;
         $cookie_id = json_encode($cookie_id);
     }
     setcookie('cookie_id', $cookie_id, $expire, $path);
