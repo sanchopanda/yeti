@@ -1,12 +1,12 @@
 <?php require('functions.php');
-require('data.php');
-require('lots.php');
-require('userdata.php');
+require('init.php');
 
 session_start();
 
-//Валидация форм
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (!$connection) {
+    $error = mysqli_connect_error();
+    $page_content = render('error.php', ['error' => $error]);
+} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $form = $_POST;
     $required_fields = ['email', 'password'];
     $errors = [];
@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     };
 
     if (!count($errors)) {
-
         if ($user = searchUserByEmail($form['email'], $users)) {
             if (password_verify($form['password'], $user['password'])) {
                 $_SESSION['user'] = $user;
@@ -31,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (count($errors)) {
-        $page_content = render('login.php', ['form' => $form, 'errors' => $errors, 'form' => $form]);
+        $page_content = render('login.php', ['form' => $form, 'errors' => $errors]);
     } else {
         $page_content = render('index.php', ['lots' => $lots]);
     }

@@ -1,6 +1,6 @@
 <?php require('functions.php');
-require('data.php');
-require('lots.php');
+require('init.php');
+
 
 
 $page_content = render('index.php', ['lots' => $lots]);

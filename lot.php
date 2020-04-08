@@ -1,6 +1,5 @@
 <?php require('functions.php');
-require('lots.php');
-require('data.php');
+require('init.php');
 $id = $_GET['id'];
 $lot = $lots[$id];
 $expire = strtotime("+30 days");
@@ -15,10 +14,11 @@ if ($lot) {
         if (!in_array($id, $cookie_id)) {
             array_push($cookie_id, $id);
             $cookie_id = json_encode($cookie_id);
-        };
-        $cookie_id = json_encode($cookie_id);
+        } else {
+            $cookie_id = json_encode($cookie_id);
+        }
     } else {
-        // $cookie_id[] = $id;
+        $cookie_id[] = $id;
         $cookie_id = json_encode($cookie_id);
     }
     setcookie('cookie_id', $cookie_id, $expire, $path);
@@ -28,6 +28,6 @@ if ($lot) {
 
 $layout_content = render(
     'layout.php',
-    ['content' => $page_content, 'title' => $lot['name'], 'categories' => $categories]
+    ['content' => $page_content, 'title' => $lot['title'], 'categories' => $categories]
 );
 print($layout_content);

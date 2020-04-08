@@ -1,9 +1,11 @@
 <?php require('functions.php');
-require('data.php');
-require('lots.php');
+require('init.php');
 session_start();
 
-if (!$_SESSION['user']) {
+if (!$connection) {
+    $error = mysqli_connect_error();
+    $page_content = render('error.php', ['error' => $error]);
+} else if (!$_SESSION['user']) {
     $page_content = render('404.php', []);
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
@@ -22,6 +24,13 @@ if (!$_SESSION['user']) {
             $errors[$field] = 'Поле не заполнено';
         };
     };
+
+    foreach ($categories as $key => $value) {
+        if ($value['category_name'] == $lot['category']) {
+            $lot['category_id'] = $value['id'];
+        }
+    }
+
     if (!$lot['path']) {
         if (!empty($_FILES['lot-image']['name'])) {
             $tmp_name = $_FILES['lot-image']['tmp_name'];
@@ -34,7 +43,7 @@ if (!$_SESSION['user']) {
                 $errors['lot-image'] = 'Загрузите изображение в формате jpeg или png';
             } else {
                 move_uploaded_file($tmp_name, 'img/' . $path);
-                $lot['path'] = $path;
+                $lot['path'] = 'img/' . $path;
             };
         } else {
             $errors['lot-image'] = 'Вы не загрузили файл';
@@ -44,12 +53,32 @@ if (!$_SESSION['user']) {
     if (count($errors)) {
         $page_content = render('add.php', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories]);
     } else {
-        $index = count($lots);
-        $lots[$index]['name'] = $lot['lot-name'];
-        $lots[$index]['cat'] = $lot['category'];
-        $lots[$index]['price'] = $lot['lot-rate'];
-        $lots[$index]['url'] = 'img/' . $lot['path'];
-        $page_content = render('lot-item.php', ['lot' => $lots[$index]]);
+        $sql = 'INSERT INTO lots (start_date, title, description, image, start_price, finish_date, step, author_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $stmt = mysqli_prepare($connection, $sql);
+        mysqli_stmt_bind_param($stmt, 'sssssssss', date("y-m-d H:m:s"), $lot['lot-name'], $lot['message'], $lot['path'], $lot['lot-rate'], $lot['lot-date'], $lot['lot-step'], $_SESSION['user']['id'], $lot['category_id']);
+        mysqli_stmt_execute($stmt);
+        $page_content = render('index.php', ['lots' => $lots]);
+
+
+
+        $sql = 'SELECT start_date, title, description, image, start_price, finish_date, step, count_favor, author_id, winner_id, categories.category_name as category_id FROM lots
+JOIN categories ON lots.category_id = categories.id';
+        $answer = mysqli_query($connection, $sql);
+        $lots = mysqli_fetch_all($answer, MYSQLI_ASSOC);
+
+
+        $add_lot['start_date'] = date("y-m-d H:m:s");
+        $add_lot['title'] = $lot['lot-name'];
+        $add_lot['description'] = $lot['message'];
+        $add_lot['image'] = $lot['path'];
+        $add_lot['start_price'] = $lot['lot-rate'];
+        $add_lot['finish_date'] = $lot['lot-date'];
+        $add_lot['step'] = $lot['lot-step'];
+        $add_lot['count_favor'] = $_SESSION['user']['id'];
+        $add_lot['category_id'] = $lot['category_id'];
+
+
+        $page_content = render('lot-item.php', ['lot' => $add_lot]);
     }
 } else {
     $page_content = render('add.php', ['categories' => $categories]);

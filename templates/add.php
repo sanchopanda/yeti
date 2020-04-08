@@ -19,8 +19,7 @@
             <label for="category">Категория</label>
             <select id="category" name="category">
                 <?php foreach ($categories as $key => $cat) : ?>
-                <option <? if ($cat==$lot['category']) : ?>selected
-                    <? endif ?>><?= $cat ?></option>
+                <option><?= $cat['category_name'] ?></option>
                 <?php endforeach; ?>
             </select>
             <span class="form__error">Выберите категорию</span>

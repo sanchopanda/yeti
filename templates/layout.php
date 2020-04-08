@@ -32,7 +32,7 @@ session_start();
 
                 <?php if ($_SESSION['user']) : ?>
                 <div class="user-menu__image">
-                    <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
+                    <img src="<?= $_SESSION['user']['avatar'] ?>" width="40" height="40" alt="Пользователь">
                 </div>
                 <div class="user-menu__logged">
                     <p>
@@ -43,7 +43,7 @@ session_start();
                 <?php else : ?>
                 <ul class="user-menu__list">
                     <li class="user-menu__item">
-                        <a href="#">Регистрация</a>
+                        <a href="sign-up.php">Регистрация</a>
                     </li>
                     <li class="user-menu__item">
                         <a href="login.php">Вход</a>
@@ -63,7 +63,7 @@ session_start();
             <ul class="nav__list container">
                 <?php foreach ($categories as $key => $cat) : ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $cat ?></a>
+                    <a href="all-lots.html"><?= $cat['category_name'] ?></a>
                 </li>
                 <?php endforeach; ?>
             </ul>

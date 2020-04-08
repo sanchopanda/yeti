@@ -28,19 +28,22 @@
         <h2>Открытые лоты</h2>
     </div>
     <ul class="lots__list">
-        <?php foreach ($lots as $key => $item) : ?>
+        <?php
+        $lots = array_reverse($lots);
+        foreach ($lots as $key => $item) : ?>
         <li class="lots__item lot">
             <div class="lot__image">
-                <img src="<?= $item['url']; ?>" width="350" height="260" alt="">
+                <img src="<?= $item['image']; ?>" width="350" height="260" alt="">
             </div>
             <div class="lot__info">
-                <span class="lot__category"><?= $item['cat']; ?></span>
-                <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?= $key ?>"><?= $item['name']; ?></a></h3>
+                <span class="lot__category"><?= $item['category_id']; ?></span>
+                <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?= $key ?>"><?= $item['title']; ?></a>
+                </h3>
                 <div class="lot__state">
                     <div class="lot__rate">
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost">
-                            <?= price($item['price']); ?>
+                            <?= price($item['start_price']); ?>
                         </span>
                     </div>
                     <div class="lot__timer timer">
