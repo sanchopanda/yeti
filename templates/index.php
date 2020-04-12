@@ -29,15 +29,18 @@
     </div>
     <ul class="lots__list">
         <?php
-        $lots = array_reverse($lots);
-        foreach ($lots as $key => $item) : ?>
+        $index = count($lots) - 1;
+        while ($index >= 0) : ?>
+        <?php $item = $lots[$index];
+            ?>
         <li class="lots__item lot">
             <div class="lot__image">
                 <img src="<?= $item['image']; ?>" width="350" height="260" alt="">
             </div>
             <div class="lot__info">
                 <span class="lot__category"><?= $item['category_id']; ?></span>
-                <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?= $key ?>"><?= $item['title']; ?></a>
+                <h3 class="lot__title"><a class="text-link"
+                        href="lot.php?id=<?= $item['lot_id'] ?>"><?= $item['title']; ?></a>
                 </h3>
                 <div class="lot__state">
                     <div class="lot__rate">
@@ -52,6 +55,8 @@
                 </div>
             </div>
         </li>
-        <?php endforeach; ?>
+        <?php
+            $index = $index - 1; ?>
+        <?php endwhile; ?>
     </ul>
 </section>

@@ -1,6 +1,6 @@
 <?php require('functions.php');
 require('init.php');
-
+require('userdata.php');
 session_start();
 
 if (!$connection) {
@@ -29,14 +29,12 @@ if (!$connection) {
         }
     }
 
-    if (count($errors)) {
-        $page_content = render('login.php', ['form' => $form, 'errors' => $errors]);
-    } else {
-        $page_content = render('index.php', ['lots' => $lots]);
+    if (empty($errors)) {
+        header("Location: /");
     }
-} else {
-    $page_content = render('login.php', []);
 };
+
+$page_content = render('login.php', ['form' => $form, 'errors' => $errors]);
 
 
 $layout_content = render(

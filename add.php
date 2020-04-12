@@ -50,23 +50,23 @@ if (!$connection) {
         };
     }
 
-    if (count($errors)) {
-        $page_content = render('add.php', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories]);
-    } else {
+    if (empty($errors)) {
         $sql = 'INSERT INTO lots (start_date, title, description, image, start_price, finish_date, step, author_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 'sssssssss', date("y-m-d H:m:s"), $lot['lot-name'], $lot['message'], $lot['path'], $lot['lot-rate'], $lot['lot-date'], $lot['lot-step'], $_SESSION['user']['id'], $lot['category_id']);
         mysqli_stmt_execute($stmt);
-        $page_content = render('index.php', ['lots' => $lots]);
 
 
 
-        $sql = 'SELECT start_date, title, description, image, start_price, finish_date, step, count_favor, author_id, winner_id, categories.category_name as category_id FROM lots
+
+        /* $sql = 'SELECT start_date, title, description, image, start_price, finish_date, step, count_favor, author_id, winner_id, categories.category_name as category_id FROM lots
 JOIN categories ON lots.category_id = categories.id';
         $answer = mysqli_query($connection, $sql);
-        $lots = mysqli_fetch_all($answer, MYSQLI_ASSOC);
+        $lots = mysqli_fetch_all($answer, MYSQLI_ASSOC);*/
+        $add_lot_id = mysqli_insert_id($connection);
+        header("Location: lot.php?id=" . $add_lot_id);
 
-
+        /*
         $add_lot['start_date'] = date("y-m-d H:m:s");
         $add_lot['title'] = $lot['lot-name'];
         $add_lot['description'] = $lot['message'];
@@ -78,12 +78,11 @@ JOIN categories ON lots.category_id = categories.id';
         $add_lot['category_id'] = $lot['category_id'];
 
 
-        $page_content = render('lot-item.php', ['lot' => $add_lot]);
-    }
-} else {
-    $page_content = render('add.php', ['categories' => $categories]);
+        $page_content = render('lot-item.php', ['lot' => $add_lot]);*/
+    };
 };
 
+$page_content = render('add.php', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories]);
 
 $layout_content = render(
     'layout.php',

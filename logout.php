@@ -1,4 +1,5 @@
 <?php require('functions.php');
+require('init.php');
 require('data.php');
 require('lots.php');
 require('userdata.php');
