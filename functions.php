@@ -27,17 +27,23 @@ function price($num)
     print($price);
 };
 
-function time_remaining()
+function time_remaining($for_time)
 {
     date_default_timezone_set("Europe/Moscow");
     $now = strtotime('now');
-    $second_today = $now % 86400;
-    $second_remaining = 86400 - $second_today - 10800;
-    $hour_remaining = floor($second_remaining / 3600);
-    $minute_remaining = floor(($second_remaining % 3600) / 60);
+    $for_time = strtotime($for_time);
+    if ($now > $for_time) {
+        print("Лот закрыт");
+        return;
+    }
+    $time_remaining = $for_time - $now;
+    $hour_remaining = floor($time_remaining / 3600);
+    $minute_remaining = floor(($time_remaining % 3600) / 60);
     $time_remaining = $hour_remaining . ':' . $minute_remaining;
     print($time_remaining);
 };
+
+
 
 function searchUserByEmail($formEmail, $userData)
 {
@@ -67,6 +73,6 @@ function get_bets_for_id($lot_id)
     INNER JOIN lots ON lots.id = bets.lot_id
     LEFT JOIN users ON users.id = bets.user_id
     WHERE lots.id = " . $lot_id . "
-    ORDER BY DATE DESC;
+    ORDER BY current_price DESC;
     ";
 };

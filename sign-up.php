@@ -1,6 +1,5 @@
 <?php require('functions.php');
 require('init.php');
-require('data.php');
 require('lots.php');
 session_start();
 

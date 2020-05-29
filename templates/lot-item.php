@@ -13,9 +13,10 @@ session_start();
         </div>
         <div class="lot-item__right">
             <?php if ($_SESSION['user']) : ?>
+            <?php if (strtotime('now') < strtotime($lot['finish_date'])) : ?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
-                    10:54:12
+                    <?= time_remaining($lot['finish_date']); ?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
@@ -26,18 +27,44 @@ session_start();
                         Мин. ставка <span><?= $lot['bets_price'] + $lot['step'] ?></span>
                     </div>
                 </div>
-                <form class="lot-item__form" action="lot.php" method="post">
-                    <p class="lot-item__form-item">
+                <form class="lot-item__form <?php if ($errors) {
+                                                        print('form-invalid');
+                                                    }; ?>" action="lot.php?id=<?= $lot['id'] ?>" method="post">
+                    <p class="lot-item__form-item <?php if ($errors) {
+                                                                print('form__item--invalid');
+                                                            }; ?>">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="number" name="cost"
                             placeholder="<?= $lot['bets_price'] + $lot['step'] ?>">
+                        <span class="form__error"><?php
+                                                            print($errors);
+                                                            ?></span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
             </div>
             <?php endif; ?>
+            <?php if (strtotime('now') > strtotime($lot['finish_date'])) : ?>
+            <div class="lot-item__state">
+                <div class="lot-item__timer timer">
+                    <?= time_remaining($lot['finish_date']); ?>
+                </div>
+                <div class="lot-item__cost-state">
+                    <div class="lot-item__rate">
+                        <span class="lot-item__amount">Финальная цена</span>
+                        <span class="lot-item__cost"><?= $lot['bets_price'] ?></span>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php endif; ?>
+            <?php if (!$_SESSION['user']) : ?>
+            <div class="lot-item__state">
+                <p>Войдите чтобы сделать ставку</p>
+            </div>
+            <?php endif; ?>
             <div class="history">
-                <h3>История ставок (<span>10</span>)</h3>
+                <h3>История ставок</h3>
 
                 <table class="history__list">
                     <?php foreach ($bets as $key => $item) : ?>

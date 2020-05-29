@@ -37,6 +37,9 @@ CREATE TABLE lots (
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+CREATE fulltext INDEX lot_ft_search
+ON lot(title, description);
+
 CREATE TABLE bets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATETIME,
